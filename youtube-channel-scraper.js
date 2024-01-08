@@ -16,47 +16,29 @@ async function getVideoDetails(youtube, videoId) {
     }
 
     const video = response.data.items[0].snippet;
-    const description = video.description || '';
-    const descriptionParts = splitDescription(description);
 
-    return {
-      title: video.title,
-      embedLink: `https://www.youtube.com/embed/${videoId}`,
-      publishedAt: video.publishedAt,
-      description: {
-        firstParagraph: descriptionParts.firstParagraph,
-        originalPublishTimestamp: descriptionParts.originalPublishTimestamp,
-        remainingText: descriptionParts.remainingText
-      }
-    };
+    // Extracting the highest resolution thumbnail URL
+    const thumbnails = video.thumbnails;
+    const thumbnailUrl = 
+      (thumbnails.maxres && thumbnails.maxres.url) ||
+      (thumbnails.standard && thumbnails.standard.url) ||
+      (thumbnails.high && thumbnails.high.url) ||
+      (thumbnails.medium && thumbnails.medium.url) ||
+      thumbnails.default.url;
+  
+    const description = video.description || '';
+
+  return {
+    title: video.title,
+    embedLink: `https://www.youtube.com/embed/${videoId}`,
+    thumbnailUrl: thumbnailUrl,
+    publishedAt: video.publishedAt,
+    description: video.description
+  };
   } catch (error) {
     console.error('Error fetching video details:', error);
     throw error;
   }
-}
-
-function splitDescription(description) {
-  const parts = description.split('\n').map(line => line.trim());
-  let firstParagraph = '';
-  let originalPublishTimestamp = '';
-  let remainingText = '';
-
-  let firstParagraphEndFound = false;
-
-  parts.forEach((line, index) => {
-    if (!firstParagraphEndFound) {
-      firstParagraph += line + '\n';
-      if (line === '' || index === parts.length - 1) {
-        firstParagraphEndFound = true;
-      }
-    } else if (line.startsWith('Originally Published')) {
-      originalPublishTimestamp = line;
-    } else {
-      remainingText += line + '\n';
-    }
-  });
-
-  return { firstParagraph, originalPublishTimestamp, remainingText };
 }
 
 async function listAllVideos() {
