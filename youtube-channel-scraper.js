@@ -1,4 +1,9 @@
 const https = require('https');
+try {
+  require('dotenv').config();
+} catch (error) {
+  console.warn("dotenv is not available. Continuing without loading environment variables from .env file.");
+}
 
 const apiKey = process.env.YOUTUBE_API_KEY;
 const channelId = process.env.YOUTUBE_CHANNEL_ID;
