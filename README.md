@@ -13,15 +13,14 @@
 ## Installation
 
 1.  Clone or download `youtube-channel-scraper.js` into your Node.js project.
-2.  Install required dependencies by executing `npm install googleapis dotenv` in your project's root directory.
-3.  Create a `.env` file in the root of your project with the following content:
+2.  Ensure you set the following environment variables:
 
 ```sh
 YOUTUBE_API_KEY=your_youtube_api_key
 YOUTUBE_CHANNEL_ID=your_channel_id
 ```
 
-1.  Replace `your_youtube_api_key` and `your_channel_id` with your actual API key and YouTube channel ID.
+3.  Replace `your_youtube_api_key` and `your_channel_id` with your actual API key and YouTube channel ID.
 
 ## Usage
 
@@ -54,12 +53,9 @@ The module retrieves the following details for each video in the specified YouTu
 *  Video Title: The title of the video.
 *  Embed Link: A direct link to embed the video.
 *  Timestamp of Publication: The publication date and time of the video.
-*  Video Description: Broken down into:
-    *  The first paragraph.
-    *  Any timestamp prefixed with "Originally Published".
-    *  The remaining text of the description.
+*  Video Description: The whole video description.
 
 ## Limitations
 
 *  Be mindful of the quota limits associated with your YouTube Data API key.
-*  Pagination for channels with a very large number of videos is not specifically handled in this module.
+*  Pagination for channels with a very large number of videos is not specifically handled.
